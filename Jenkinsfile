@@ -18,6 +18,13 @@ pipeline {
                 jacoco execPattern: 'target/jacoco.exec'
               }
             }
-        }   
+        }  
+      stage('Docker Build and Push') {
+        steps {
+          sh 'printenv'
+          sh 'docker build -t jdtotow/numeric-app:""$GIT_COMMIT"" .'
+          sh 'docker push jdtotow/numeric-app:""$GIT_COMMIT""'
+        }
+      } 
     }
 }
