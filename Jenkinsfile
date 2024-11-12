@@ -19,7 +19,7 @@ pipeline {
               }
             }
         }  
-      stage('Docker Build and Push') {
+      stage('Docker Build and Push image') {
         steps {
           withDockerRegistry([credentialsId: "docker", url:""]) {
             sh 'printenv'
