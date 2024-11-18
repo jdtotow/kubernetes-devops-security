@@ -30,7 +30,7 @@ pipeline {
         }
       } 
       stage('SonarQube Analysis') {
-        withSonarQubeEnv() {
+        steps {
           sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application'"
         }
       }
