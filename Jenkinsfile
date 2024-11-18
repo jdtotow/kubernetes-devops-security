@@ -29,10 +29,14 @@ pipeline {
           }
         }
       } 
+      stage('SonarQube Analysis') {
+        withSonarQubeEnv() {
+          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application'"
+        }
+      }
       stage('Docker Build and Push') {
         steps {
           withDockerRegistry([credentialsId: "docker", url:""]) {
-            sh 'printenv'
             sh 'docker build -t jdtotow/numeric-app:""$GIT_COMMIT"" .'
             sh 'docker push jdtotow/numeric-app:""$GIT_COMMIT""'
           }
