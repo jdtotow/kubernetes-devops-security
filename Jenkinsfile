@@ -31,7 +31,7 @@ pipeline {
       } 
       stage('SonarQube Analysis') {
         steps {
-          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application'"
+          sh "mvn clean verify sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.projectName='numeric-application' -Dsonar.host.url=http://jddevsecops.eastus.cloudapp.azure.com:9000 -Dsonar.token=sqp_938597f4abaa017ab699bcdb51d50456e096ab12"
         }
       }
       stage('Docker Build and Push') {
