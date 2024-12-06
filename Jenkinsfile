@@ -31,8 +31,15 @@ pipeline {
       } 
       stage('SonarQube Analysis') {
         steps {
-          withCredentials([string(credentialsId: 'sonar_host', variable: 'sonar_host'),string(credentialsId: 'sonar_key', variable: 'sonar_key'), string(credentialsId: 'sonar_pk', variable: 'sonar_pk')]){
-            sh "mvn clean verify sonar:sonar -Dsonar.projectKey=$sonar_pk -Dsonar.projectName='numeric-application' -Dsonar.host.url=$sonar_host -Dsonar.token=$sonar_key"
+          withSonarQubeEnv('SonarQube'){
+            withCredentials([string(credentialsId: 'sonar_host', variable: 'sonar_host'),string(credentialsId: 'sonar_key', variable: 'sonar_key'), string(credentialsId: 'sonar_pk', variable: 'sonar_pk')]){
+              sh "mvn clean verify sonar:sonar -Dsonar.projectKey=$sonar_pk -Dsonar.projectName='numeric-application' -Dsonar.host.url=$sonar_host -Dsonar.token=$sonar_key"
+            }
+          }
+          timeout(time: 2, unit: 'MINUTES'){
+            script{
+              waitForQualityGate abortPipeline: true 
+            }
           }
         }
       }
